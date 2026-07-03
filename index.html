@@ -5,16 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nathan Egbuna</title>
 <script>
-  function setTheme(theme) {
+  function setTheme(theme, save = true) {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    if (save) {
+      localStorage.setItem('theme', theme);
+    }
     const btn = document.getElementById('theme-btn');
     if (btn) btn.innerText = theme === 'dark' ? 'light' : 'dark';
   }
 
   function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
-    setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    setTheme(currentTheme === 'dark' ? 'light' : 'dark', true);
   }
 
   // Fully automatic real-time theme initialization
@@ -28,10 +30,10 @@
   }
 
   // Listen for real-time system changes if user hasn't overridden it manually
-  if (!savedTheme && window.matchMedia) {
+  if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       if (!localStorage.getItem('theme')) {
-        setTheme(e.matches ? 'dark' : 'light');
+        setTheme(e.matches ? 'dark' : 'light', false);
       }
     });
   }
@@ -71,7 +73,7 @@
     color: var(--text-main);
     background: var(--bg-color);
     padding: 3rem 1.5rem;
-    max-width: 720px;
+    max-width: 715px;
     margin: 0 auto;
     transition: background 0.2s, color 0.2s;
   }

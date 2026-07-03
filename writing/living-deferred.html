@@ -5,26 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>why you should probably stop living deferred - Nathan Egbuna</title>
 <script>
-  function setTheme(theme) {
+  function setTheme(theme, save = true) {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    if (save) {
+      localStorage.setItem('theme', theme);
+    }
     const btn = document.getElementById('theme-btn');
     if (btn) btn.innerText = theme === 'dark' ? 'light' : 'dark';
   }
 
   function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
-    setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    setTheme(currentTheme === 'dark' ? 'light' : 'dark', true);
   }
 
-  // Initialize theme
+  // Fully automatic real-time theme initialization
   const savedTheme = localStorage.getItem('theme');
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
   if (savedTheme) {
     document.documentElement.setAttribute('data-theme', savedTheme);
-  } else if (prefersDark) {
-    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
   }
+
+  // Listen for real-time system changes if user hasn't overridden it manually
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light', false);
+      }
+    });
+  }
+
+  // Sync button text immediately when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.innerText = currentTheme === 'dark' ? 'light' : 'dark';
+  });
 </script>
 <style>
   :root {
@@ -54,7 +73,7 @@
     color: var(--text-main);
     background: var(--bg-color);
     padding: 3rem 1.5rem;
-    max-width: 720px;
+    max-width: 715px;
     margin: 0 auto;
     transition: background 0.2s, color 0.2s;
   }
@@ -168,27 +187,27 @@
 <div class="meta">nathan egbuna — april 2026</div>
 
 <div class="content">
-  <p>We’ve been sold this idea that life is a series of gates. You lock in to get the grades, to get the college, to get the job, to get the money. We treat our consciousness like a machine that needs to be optimized, which is wild because, biologically, we aren’t machines. We are 300,000-year-old organisms living in a 150-year-old digital experiment.</p>
+  <p>We've been sold this idea that life is a series of gates. You lock in to get the grades, to get the college, to get the job, to get the money. We treat our consciousness like a machine that needs to be optimized, which is wild because, biologically, we aren't machines. We are 300,000-year-old organisms living in a 150-year-old digital experiment.</p>
   
   <h2>productivity trap</h2>
   
-  <p>Post-Industrial Revolution society expects us to be "on” all the time. When we aren't, when we’re just scrolling or wasting time, we feel this crushing sense of shame. But why? If you’re doing homework for a class you're not that invested in, and you feel like scrolling, maybe that’s just you being a human who wasn't built to stare at an uninteresting book for hours on end. Not that scrolling is much better, but if you died tomorrow, would you be glad you shamed yourself for that 15-minute break?</p>
+  <p>Post-Industrial Revolution society expects us to be "on" all the time. When we aren't, when we're just scrolling or wasting time, we feel this crushing sense of shame. But why? If you're doing homework for a class you're not that invested in, and you feel like scrolling, maybe that's just you being a human who wasn't built to stare at an uninteresting book for hours on end. Not that scrolling is much better, but if you died tomorrow, would you be glad you shamed yourself for that 15-minute break?</p>
   
   <h2>the utility of the dollar</h2>
   
-  <p>Going through life's gates to chase money isn't necessarily a bad thing. And I also have to acknowledge the privilege of philosophy here. A lot of the great thinkers were aristocrats, mainly because you need the literal time to sit around with your thoughts all day. If you’re making $30k a year and someone gives you $100k, that is life-altering. That is the difference between thrifted clothes and new ones; between processed junk and healthy meals.</p>
+  <p>Going through life's gates to chase money isn't necessarily a bad thing. And I also have to acknowledge the privilege of philosophy here. A lot of the great thinkers were aristocrats, mainly because you need the literal time to sit around with your thoughts all day. If you're making $30k a year and someone gives you $100k, that is life-altering. That is the difference between thrifted clothes and new ones; between processed junk and healthy meals.</p>
   
-  <p>But once your basic needs are met, the curve flattens. If you’re making $200k and move to $300k, you’re just eating at "nicer" restaurants or taking an extra vacation. Your fulfillment probably won't increase proportionally with your bank account.</p>
+  <p>But once your basic needs are met, the curve flattens. If you're making $200k and move to $300k, you're just eating at "nicer" restaurants or taking an extra vacation. Your fulfillment probably won't increase proportionally with your bank account.</p>
   
   <h2>money is the vehicle, not the destination</h2>
   
-  <p>We treat money like the end-all-be-all, but past a certain point, it’s just a tool. The funniest proof of this is looking at "successful” people who have "made it,” think billionaires or retired pro athletes. Once people have all the money in the world, what do they do? They go back to the basics: they paint, they play instruments, they pick up a new sport.</p>
+  <p>We treat money like the end-all-be-all, but past a certain point, it's just a tool. The funniest proof of this is looking at "successful" people who have "made it," think billionaires or retired pro athletes. Once people have all the money in the world, what do they do? They go back to the basics: they paint, they play instruments, they pick up a new sport.</p>
   
-  <p>The irony is that you don't need a billion dollars to pick up a paintbrush or a guitar. You can do that <b>right now</b>. We’re working ourselves to death to buy back the freedom to do things that are essentially free.</p>
+  <p>The irony is that you don't need a billion dollars to pick up a paintbrush or a guitar. You can do that <b>right now</b>. We're working ourselves to death to buy back the freedom to do things that are essentially free.</p>
   
   <h2>fulfilling the blink of an eye</h2>
   
-  <p>I’m not talking about hedonism or destroying your life for a quick hit of pleasure. I’m talking about fulfillment. <b>You</b> are here for a blink of an eye in the grand scheme of the universe. If you really think about it, denying yourself the experience of being alive because you’re worried about a productivity metric is a weird way to spend your only conscious experience.</p>
+  <p>I'm not talking about hedonism or destroying your life for a quick hit of pleasure. I'm talking about fulfillment. <b>You</b> are here for a blink of an eye in the grand scheme of the universe. If you really think about it, denying yourself the experience of being alive because you're worried about a productivity metric is a weird way to spend your only conscious experience.</p>
   
   <p>We need to stop mindlessly following the path and start asking: What do I actually want from this experience? Because if the goal is just more money, you might find yourself at the end of the road with a full bank account and an empty life.</p>
 </div>
