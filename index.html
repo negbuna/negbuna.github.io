@@ -17,14 +17,31 @@
     setTheme(currentTheme === 'dark' ? 'light' : 'dark');
   }
 
-  // Initialize theme
+  // Fully automatic real-time theme initialization
   const savedTheme = localStorage.getItem('theme');
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
   if (savedTheme) {
     document.documentElement.setAttribute('data-theme', savedTheme);
-  } else if (prefersDark) {
-    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
   }
+
+  // Listen for real-time system changes if user hasn't overridden it manually
+  if (!savedTheme && window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  }
+
+  // Sync button text immediately when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.innerText = currentTheme === 'dark' ? 'light' : 'dark';
+  });
 </script>
 <style>
   :root {
@@ -54,7 +71,7 @@
     color: var(--text-main);
     background: var(--bg-color);
     padding: 3rem 1.5rem;
-    max-width: 640px;
+    max-width: 720px;
     margin: 0 auto;
     transition: background 0.2s, color 0.2s;
   }
@@ -154,7 +171,7 @@
     font-size: 0.72rem;
     color: var(--text-heading);
     border: 1px solid var(--border-light);
-    padding: 0.1rem 0.4rem;
+    padding: 0.1rem 0.25rem;
     border-radius: 2px;
     margin-left: 0.4rem;
     vertical-align: middle;
@@ -220,12 +237,6 @@
   </div>
 </div>
 
-<script>
-  // Ensure the button text matches the current theme on load
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-  document.getElementById('theme-btn').innerText = currentTheme === 'dark' ? 'light' : 'dark';
-</script>
-
 <div class="intro">
   <p>Hi, I’m Nathan. I’m an incoming freshman at Penn, having recently graduated from Phillips Academy.</p>
   <p><strong>Current interests (subject to change):</strong> Mechanistic interpretability, latent-space reasoning, continual learning, and test-time optimization.</p>
@@ -234,7 +245,7 @@
 <div class="section">
   <div class="section-title">research</div>
   <ul>
-    <li><a href="https://arxiv.org/abs/2509.18116v2">Amortized Latent Steering: Low-Cost Alternative to Test-Time Optimization</a> <span class="tag">NeurIPS '25 MATH-AI</span> <span class="tag">NeurIPS '25 ER</span> <a href="https://github.com/negbuna/ALS" class="tag">Code</a>
+    <li><a href="https://arxiv.org/abs/2509.18116v2">Amortized Latent Steering: Low-Cost Alternative to Test-Time Optimization</a> <span class="tag">NeurIPS '25 MATH-AI</span> <span class="tag">NeurIPS '25 Efficient Reasoning</span> <a href="https://github.com/negbuna/ALS" class="tag">Code</a>
       <div class="item-desc"><b>Nathan Egbuna</b>, Saatvik Gaur, Kevin Zhu, Sunishchal Dev, Ashwinee Panda, Maheep Chaudhary.</div>
     </li>
   </ul>
