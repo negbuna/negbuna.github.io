@@ -278,31 +278,8 @@
 
 <div class="footer">
   <div>last updated july 2026</div>
-  <div class="now-playing" id="song-name">not playing</div>
+  <div class="now-playing">current favorite song: fit in — osamason</div>
 </div>
-
-<script>
-  const USERNAME = 'egbuna';
-  const API_KEY = 'eb74449989ec76319ec6411859d191b6';
-
-  async function fetchNowPlaying() {
-    try {
-      const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${USERNAME}&api_key=${API_KEY}&format=json&limit=1`);
-      const data = await response.json();
-      const track = data.recenttracks.track[0];
-
-      if (track) {
-        const song = track.name.toLowerCase();
-        const artist = track.artist['#text'].toLowerCase();
-        document.getElementById('song-name').innerText = `listening to: ${song} — ${artist}`;
-      }
-    } catch (error) {
-      console.log('Error fetching music:', error);
-    }
-  }
-
-  fetchNowPlaying();
-</script>
 
 </body>
 </html>
